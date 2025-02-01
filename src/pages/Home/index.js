@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import Menu from "../../containers/Menu";
 import ServiceCard from "../../components/ServiceCard";
 import EventCard from "../../components/EventCard";
@@ -12,8 +13,19 @@ import Form from "../../containers/Form";
 import Modal from "../../containers/Modal";
 import { useData } from "../../contexts/DataContext";
 
+
 const Page = () => {
-  const {last} = useData()
+  const { data } = useData();
+  const [last, setLatestEvent] = useState(null);
+
+  useEffect(() => {
+    if (data && data.events) {
+      const sortedEvents = [...data.events].sort((a, b) => new Date(b.date) - new Date(a.date));
+      setLatestEvent(sortedEvents[0]);
+    }
+  }, [data]); // Exécute cet effet lorsque `data` change
+  // eslint-disable-next-line no-console
+  console.log("Dernier événement :", last);
   return <>
     <header>
       <Menu />
