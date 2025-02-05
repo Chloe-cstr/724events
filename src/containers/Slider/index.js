@@ -7,9 +7,9 @@ import "./style.scss";
 const Slider = () => {
   const { data } = useData();
   const [index, setIndex] = useState(0);
-  const byDateDesc = data?.focus.sort((evtA, evtB) =>
+  const byDateDesc = data?.focus?.sort((evtA, evtB) =>
     new Date(evtA.date) < new Date(evtB.date) ? -1 : 1
-  );
+  )|| [];
   const nextCard = () => {
     setTimeout(
       () => setIndex(index < byDateDesc.length - 1 ? index + 1 : 0),
@@ -22,7 +22,7 @@ const Slider = () => {
   return (
     <div className="SlideCardList">
       {byDateDesc?.map((event, idx) => (
-        <React.Fragment key={`${event.title}-${event.date}`}>
+        <React.Fragment key={`${event.description}-${event.title}-${event.date}`}>
           <div
             className={`SlideCard SlideCard--${
               index === idx ? "display" : "hide"
@@ -39,7 +39,7 @@ const Slider = () => {
           </div>
           <div className="SlideCard__paginationContainer">
             <div className="SlideCard__pagination">
-              {byDateDesc.map((_, radioIdx) => (
+              {byDateDesc?.map((_, radioIdx) => (
                 <input
                   key={`${event.date}-${event.title}`}
                   type="radio"
